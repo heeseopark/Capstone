@@ -21,12 +21,10 @@ print("scale factor: " + str(scale_factor))
 
 hand.scale(scale_factor).translate('z', -hand.min_z_value).save('new3DModel.stl')
 
-newhand = Mesh('newhand.stl').translate('z',8).print_values()
+newhand = Mesh('newhand.stl').translate('z', 5).print_values().render()
 
 readyforsubtraction = newhand.save('readyforsubtraction.stl')
 
-base = Mesh('wristbase.stl').save('newwristbase.stl')
-
-subtract_stl('newwristbase.stl', 'readyforsubtraction.stl', 'testresult.stl')
+subtract_stl('newwristbase.stl', 'circlebase.stl', 'testresult.stl')
 
 testresult = Mesh('testresult.stl').render()

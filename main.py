@@ -13,7 +13,7 @@ def subtract_stl(file1, file2, result_file):
     result_mesh.save(result_file)
 
 
-hand = Mesh('hand.stl').scale(20).smoothen().run_pca().rotate('x',-90).rotate('z',180).print_values().scale(1/20)
+hand = Mesh('hand.stl').scale(20).smoothen().run_pca().rotate('x',-90).rotate('z',180).print_values().render().scale(1/20)
 
 scale_factor = 68 / float(hand.width)
 
@@ -25,7 +25,7 @@ newhand = Mesh('newhand.stl').translate('z', 10).print_values()
 
 readyforsubtraction = newhand.save('readyforsubtraction.stl')
 
-base = Mesh('circlebase.stl').print_values()
+base = Mesh('circlebase.stl').print_values().render()
 
 subtract_stl('circlebase.stl', 'readyforsubtraction.stl', 'testresult.stl')
 

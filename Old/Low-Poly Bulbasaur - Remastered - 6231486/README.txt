@@ -1,1 +1,0 @@
-Low-Poly Bulbasaur - Remastered by flowalistik on Thingiverse: https://www.thingiverse.com/thing:6231486

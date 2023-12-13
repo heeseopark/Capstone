@@ -20,17 +20,6 @@ class Mesh:
 
         return self
     
-    def flip(self):
-        transformation_matrix = np.array([
-            [1, 0, 0, 0],
-            [0, -1, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ])
-        self.mesh.apply_transform(transformation_matrix)
-        self.update_fields()
-        return self
-    
     def save(self, filename=None):
         # If no filename is provided, use the original file name
         if filename is None:
@@ -119,12 +108,6 @@ class Mesh:
     def get_max_z_value(self):
         # Return the maximum Z value from the mesh vertices
         return np.max(self.mesh.vertices[:, 2])
-
-    def translate_z_direction(self, translation_amount):
-        translation_matrix = trimesh.transformations.translation_matrix([0, 0, translation_amount])
-        self.mesh.apply_transform(translation_matrix)
-        self.update_fields()
-        return self
 
     def scale(self, scale_factor):
         # Apply the scaling to the mesh
@@ -231,39 +214,6 @@ class Mesh:
         # Compute the minimum Z value from the mesh vertices
         self.min_z_value = np.min(self.mesh.vertices[:, 2])
         return self.min_z_value
-    
-    def rotate_x_axis(self):
-        # Define the angle of rotation in radians (90 degrees)
-        angle = - np.pi / 2  # -90 degrees in radians
-
-        # Create a rotation matrix around the X-axis
-        rotation_matrix = trimesh.transformations.rotation_matrix(angle, [1, 0, 0])
-
-        # Apply the rotation to the mesh
-        self.mesh.apply_transform(rotation_matrix)
-
-        # Update the fields to reflect the new orientation
-        self.update_fields()
-
-        # Return self for method chaining if needed
-        return self
-    
-    def rotate_z_axis(self):
-
-        # Define the angle of rotation in radians (90 degrees)
-        angle = np.pi  # 90 degrees in radians
-
-        # Create a rotation matrix around the X-axis
-        rotation_matrix = trimesh.transformations.rotation_matrix(angle, [0, 0, 1])
-
-        # Apply the rotation to the mesh
-        self.mesh.apply_transform(rotation_matrix)
-
-        # Update the fields to reflect the new orientation
-        self.update_fields()
-
-        # Return self for method chaining if needed
-        return self
 
     def rotate(self, axis, degree):
         # Convert degree to radians
@@ -319,75 +269,3 @@ class Mesh:
 
         # Return self for method chaining
         return self
-    
-    # def trim1(self):
-    #     """
-    #     Trims the mesh based on the specified x, y region.
-    #     The region includes a central rectangle and two attached semicircles.
-    #     """
-    #     # Rectangle dimensions
-    #     rect_x_half = 150 / 2
-    #     rect_y_half = 140 / 2
-
-    #     # Semicircle radius
-    #     radius = 70
-
-    #     # Define conditions for rectangle and semicircles
-    #     rect_condition = (np.abs(self.mesh.vertices[:, 0]) <= rect_x_half) & \
-    #                     (np.abs(self.mesh.vertices[:, 1]) <= rect_y_half)
-
-    #     semicircle_condition_left = ((self.mesh.vertices[:, 0] + rect_x_half) ** 2 + 
-    #                                  (self.mesh.vertices[:, 1] ** 2)) <= radius ** 2
-
-    #     semicircle_condition_right = ((self.mesh.vertices[:, 0] - rect_x_half) ** 2 + 
-    #                                   (self.mesh.vertices[:, 1] ** 2)) <= radius ** 2
-
-    #     # Combine conditions
-    #     combined_condition = rect_condition | semicircle_condition_left | semicircle_condition_right
-
-    #     # Filter vertices
-    #     filtered_vertices = self.mesh.vertices[combined_condition]
-
-    #     # Update mesh fields
-    #     self.update_fields()
-
-    #     return self
-    
-    # def trim2(self):
-    #     """
-    #     Trims the mesh to retain only a specific portion along the Z-axis.
-    #     Keeps a length of 60 units from the minimum Z value of the mesh.
-    #     """
-    #     # Find the minimum Z value
-    #     min_z = self.get_min_z_value()
-
-    #     # Define the upper limit for Z value (60 units above min_z)
-    #     upper_z_limit = min_z + 60
-
-    #     # Create a condition to filter vertices within the desired Z range
-    #     z_condition = self.mesh.vertices[:, 2] <= upper_z_limit
-
-    #     # Filter vertices based on the condition
-    #     filtered_vertices = self.mesh.vertices[z_condition]
-
-    #     # Map from old vertex indices to new indices
-    #     index_map = {}
-    #     for new_index, old_index in enumerate(np.where(z_condition)[0]):
-    #         index_map[old_index] = new_index
-
-    #     # Update faces to new vertex indices
-    #     valid_faces = []
-    #     for face in self.mesh.faces:
-    #         if all(vertex in index_map for vertex in face):
-    #             new_face = [index_map[vertex] for vertex in face]
-    #             valid_faces.append(new_face)
-
-    #     # Create a new mesh with the filtered vertices and valid faces
-    #     if valid_faces:
-    #         self.mesh = trimesh.Trimesh(vertices=filtered_vertices, faces=valid_faces)
-    #         self.update_fields()
-    #     else:
-    #         print("No valid faces found in the specified Z range.")
-
-    #     return self
-

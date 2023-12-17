@@ -25,7 +25,7 @@ newhand = Mesh('newhand.stl').translate('z', 10).print_values()
 
 readyforsubtraction = newhand.save('readyforsubtraction.stl')
 
-base = Mesh('circlebase.stl').print_values().render()
+base = Mesh('circlebase.stl').print_values()
 
 subtract_stl('circlebase.stl', 'readyforsubtraction.stl', 'testresult.stl')
 
